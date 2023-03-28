@@ -4,7 +4,7 @@
 
 ## 2. RPi Communication with Arduino
 ```
-gcc Alex-pi.cpp serial.cpp serialize.cpp –pthread –o Alex-pi
+gcc alex-pi.cpp serial.cpp serialize.cpp –pthread –o Alex-pi
 
 ./Alex-Pi
 ```
