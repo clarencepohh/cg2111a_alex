@@ -187,19 +187,19 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 	{
 		case '1':
 			*curr_speed = 100;
-			break;
+			return;
 		
 		case '2':
 			*curr_speed = 80;
-			break;
+			return;
 
 		case '3':
 			*curr_speed = 60;
-			break;
+			return;
 
 		case '4':
 			*curr_speed = 40;
-			break;
+			return;
 
 		default:
 			break;
