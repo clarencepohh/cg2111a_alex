@@ -175,8 +175,8 @@ void *receiveThread(void *p)
 
 void getParams(TPacket *commandPacket, int* command_parameter)
 {
-	printf("Enter distance/angle in cm/degrees (e.g. 50) and power in %% (e.g. 75) separated by space.\n");
-	printf("E.g. 50 75 means go at 50 cm at 75%% power for forward/backward, or 50 degrees left or right turn at 75%%  power\n");
+	// printf("Enter distance/angle in cm/degrees (e.g. 50) and power in %% (e.g. 75) separated by space.\n");
+	// printf("E.g. 50 75 means go at 50 cm at 75%% power for forward/backward, or 50 degrees left or right turn at 75%%  power\n");
 	commandPacket->params[0] = *command_parameter;
 	commandPacket->params[1] = 80;
 }
@@ -318,21 +318,20 @@ int main()
 	helloPacket.packetType = PACKET_TYPE_HELLO;
 	sendPacket(&helloPacket);
 
-	printf("Command (f=forward, b=reverse, l=turn left, r=turn right, s=stop, c=clear stats, g=get stats q=exit)\n");
+	printf("Command (w=forward, s=reverse, a=turn left 90deg, d=turn right 90deg, space=stop, esc=quit, ignore the rest: ...c=clear stats, g=get stats)\n");
+
+	// Initialise current states
+	int current_speed = 100;
+	int current_angle = 90;
 
 	while(!exitFlag)
 	{
-		// Initialise current states
-		int current_speed = 100;
-		int current_angle = 90;
 		
 		char ch;
 
 		// make terminal auto submit
 		initTermios(0);
-		read(0, &ch, 1);
-	
-		
+		read(0, &ch, 1);		
 
 		sendCommand(ch, &current_speed, &current_angle);
 		resetTermios();
