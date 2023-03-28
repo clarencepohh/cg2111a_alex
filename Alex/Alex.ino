@@ -581,7 +581,7 @@ void handleCommand(TPacket *command)
         //digitalWrite(RF, LOW);
         //digitalWrite(LR, LOW);
         //digitalWrite(RR, HIGH);
-        left((float) 3*(command->params[0]), (float) command->params[1]);
+        right((float) 1.6*(command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_TURN_LEFT:
         sendOK();
@@ -589,7 +589,7 @@ void handleCommand(TPacket *command)
         // digitalWrite(RF, HIGH);
         // digitalWrite(LR, HIGH);
         // digitalWrite(RR, LOW);
-        right((float) 3*(command->params[0]), (float) command->params[1]);
+        left((float) (command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_STOP:
         sendOK();
@@ -693,7 +693,7 @@ void loop() {
 
 // Uncomment the code below for Step 2 of Activity 3 in Week 8 Studio 2
 
- //forward(0, 100);
+// forward(0, 100);
 
 // Uncomment the code below for Week 9 Studio 2
 

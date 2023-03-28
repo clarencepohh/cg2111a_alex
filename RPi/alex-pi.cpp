@@ -26,7 +26,8 @@ void initTermios(int echo) {
 }
 
 void resetTermios(void) {
-	tcsetattr(0, TCSANOW, &old);
+	tcsetattr(0, TCSANOW, &old); // restore old settings
+
 }
 
 void handleError(TResult error)
@@ -182,10 +183,27 @@ void getParams(TPacket *commandPacket, int* command_parameter)
 
 void sendCommand(char command, int* curr_speed, int* curr_angle)
 {
-	// switch(command)
-	// {
-	// 	case 
-	// }
+	switch(command)
+	{
+		case '1':
+			*curr_speed = 100;
+			break;
+		
+		case '2':
+			*curr_speed = 80;
+			break;
+
+		case '3':
+			*curr_speed = 60;
+			break;
+
+		case '4':
+			*curr_speed = 40;
+			break;
+
+		default:
+			break;
+	}
 	
 	TPacket commandPacket;
 
@@ -200,25 +218,56 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 			sendPacket(&commandPacket);
 			break;
 
-		case 115:
+		case 's':
 			getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
 			sendPacket(&commandPacket);
 			break;
 
 		// rotation commands
-		case 97:
+		case 'a':
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
+			commandPacket.params[0] = 90;
 			sendPacket(&commandPacket);
 			break;
 
-		case 100:
+		case 'd':
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
+			commandPacket.params[0] = 90;
 			sendPacket(&commandPacket);
 			break;
 
+		case 'q':
+			getParams(&commandPacket, curr_angle);
+			commandPacket.command = COMMAND_TURN_LEFT;
+			commandPacket.params[0] = 60;
+			sendPacket(&commandPacket);
+			break;
+
+		case 'e':
+			getParams(&commandPacket, curr_angle);
+			commandPacket.command = COMMAND_TURN_RIGHT;
+			commandPacket.params[0] = 60;
+			sendPacket(&commandPacket);
+			break;
+
+		case 'z':
+			getParams(&commandPacket, curr_angle);
+			commandPacket.command = COMMAND_TURN_LEFT;
+			commandPacket.params[0] = 30;
+			sendPacket(&commandPacket);
+			break;
+
+		case 'c':
+			getParams(&commandPacket, curr_angle);
+			commandPacket.command = COMMAND_TURN_RIGHT;
+			commandPacket.params[0] = 30;
+			sendPacket(&commandPacket);
+			break;
+
+		// misc commands
 		case 32:
 			commandPacket.command = COMMAND_STOP;
 			sendPacket(&commandPacket);
@@ -239,7 +288,6 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 
 		case 27:
 			exitFlag=1;
-			resetTermios();
 			break;
 
 		default:
@@ -286,6 +334,7 @@ int main()
 		
 
 		sendCommand(ch, &current_speed, &current_angle);
+		resetTermios();
 	}
 
 	printf("Closing connection to Arduino.\n");
