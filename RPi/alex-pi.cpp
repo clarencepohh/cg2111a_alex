@@ -182,7 +182,7 @@ void getParams(TPacket *commandPacket, int* curr_speed)
 
 void sendCommand(char command, int* curr_speed)
 {
-	if command == 
+	//if command == 
 	
 	TPacket commandPacket;
 
@@ -269,7 +269,7 @@ int main()
 	while(!exitFlag)
 	{
 		// Initialise current states
-		int current_speed = 1;
+		int current_speed = 100;
 		
 		char ch;
 
