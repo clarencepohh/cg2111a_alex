@@ -197,19 +197,19 @@ void sendCommand(char command, int* curr_speed)
 			break;
 
 		case 115:
-			getParams(&commandPacket);
+			getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
 			sendPacket(&commandPacket);
 			break;
 
 		case 97:
-			getParams(&commandPacket);
+			getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			sendPacket(&commandPacket);
 			break;
 
 		case 100:
-			getParams(&commandPacket);
+			getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			sendPacket(&commandPacket);
 			break;
