@@ -172,17 +172,20 @@ void *receiveThread(void *p)
 	}
 }
 
-void getParams(TPacket *commandPacket, int* curr_speed)
+void getParams(TPacket *commandPacket, int* command_parameter)
 {
 	printf("Enter distance/angle in cm/degrees (e.g. 50) and power in %% (e.g. 75) separated by space.\n");
 	printf("E.g. 50 75 means go at 50 cm at 75%% power for forward/backward, or 50 degrees left or right turn at 75%%  power\n");
-	commandPacket->params[0] = 100;
-	commandPacket->params[1] = *curr_speed;
+	commandPacket->params[0] = *command_parameter;
+	commandPacket->params[1] = 80;
 }
 
-void sendCommand(char command, int* curr_speed)
+void sendCommand(char command, int* curr_speed, int* curr_angle)
 {
-	//if command == 
+	// switch(command)
+	// {
+	// 	case 
+	// }
 	
 	TPacket commandPacket;
 
@@ -190,7 +193,8 @@ void sendCommand(char command, int* curr_speed)
 
 	switch(command)
 	{
-		case 119:
+		// movement commands
+		case 'w':
 			getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_FORWARD;
 			sendPacket(&commandPacket);
@@ -202,14 +206,15 @@ void sendCommand(char command, int* curr_speed)
 			sendPacket(&commandPacket);
 			break;
 
+		// rotation commands
 		case 97:
-			getParams(&commandPacket, curr_speed);
+			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			sendPacket(&commandPacket);
 			break;
 
 		case 100:
-			getParams(&commandPacket, curr_speed);
+			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			sendPacket(&commandPacket);
 			break;
@@ -270,6 +275,7 @@ int main()
 	{
 		// Initialise current states
 		int current_speed = 100;
+		int current_angle = 90;
 		
 		char ch;
 
@@ -279,7 +285,7 @@ int main()
 	
 		
 
-		sendCommand(ch, &current_speed);
+		sendCommand(ch, &current_speed, &current_angle);
 	}
 
 	printf("Closing connection to Arduino.\n");

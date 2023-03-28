@@ -557,7 +557,7 @@ void handleCommand(TPacket *command)
 {
   switch(command->command)
   {
-    // For movement commands, param[0] = distance, param[1] = speed.
+    // For movement commands, param[0] = speed, param[1] undefined.
     case COMMAND_FORWARD:
         sendOK();
         digitalWrite(LF, HIGH);
@@ -574,21 +574,22 @@ void handleCommand(TPacket *command)
         digitalWrite(RR, HIGH);
         //reverse((float) command->params[0], (float) command->params[1]);
       break;
+    // For rotate commands, param[0] = angle, param[1] undefined.
     case COMMAND_TURN_RIGHT:
         sendOK();
-        digitalWrite(LF, HIGH);
-        digitalWrite(RF, LOW);
-        digitalWrite(LR, LOW);
-        digitalWrite(RR, HIGH);
-        //left((float) command->params[0], (float) command->params[1]);
+        //digitalWrite(LF, HIGH);
+        //digitalWrite(RF, LOW);
+        //digitalWrite(LR, LOW);
+        //digitalWrite(RR, HIGH);
+        left((float) 3*(command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_TURN_LEFT:
         sendOK();
-        digitalWrite(LF, LOW);
-        digitalWrite(RF, HIGH);
-        digitalWrite(LR, HIGH);
-        digitalWrite(RR, LOW);
-        //right((float) command->params[0], (float) command->params[1]);
+        // digitalWrite(LF, LOW);
+        // digitalWrite(RF, HIGH);
+        // digitalWrite(LR, HIGH);
+        // digitalWrite(RR, LOW);
+        right((float) 3*(command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_STOP:
         sendOK();
