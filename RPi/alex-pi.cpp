@@ -257,7 +257,7 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 30;
-			commandPacket->params[1] = 100;
+			commandPacket.params[1] = 100;
 			sendPacket(&commandPacket);
 			break;
 
@@ -265,7 +265,7 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 30;
-			commandPacket->params[1] = 100;
+			commandPacket.params[1] = 100;
 			sendPacket(&commandPacket);
 			break;
 
