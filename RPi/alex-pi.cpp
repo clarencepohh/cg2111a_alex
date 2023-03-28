@@ -273,7 +273,6 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 			sendPacket(&commandPacket);
 			break;
 
-		case 'c':
 		case 'C':
 			commandPacket.command = COMMAND_CLEAR_STATS;
 			commandPacket.params[0] = 0;
