@@ -560,18 +560,22 @@ void handleCommand(TPacket *command)
     // For movement commands, param[0] = speed, param[1] undefined.
     case COMMAND_FORWARD:
         sendOK();
-        digitalWrite(LF, HIGH);
-        digitalWrite(RF, HIGH);
+        int speed = command->params[0];
+        int val = pwmVal(speed);
+        analogWrite(LF, val);
+        analogWrite(RF, val);
         digitalWrite(LR, LOW);
         digitalWrite(RR, LOW);
         //forward((float) command->params[0], (float) command->params[1]);
       break;
     case COMMAND_REVERSE:
         sendOK();
+        int speed = command->params[0];
+        int val = pwmVal(speed);
         digitalWrite(LF, LOW);
         digitalWrite(RF, LOW);
-        digitalWrite(LR, HIGH);
-        digitalWrite(RR, HIGH);
+        digitalWrite(LR, val);
+        digitalWrite(RR, val);
         //reverse((float) command->params[0], (float) command->params[1]);
       break;
     // For rotate commands, param[0] = angle, param[1] undefined.
