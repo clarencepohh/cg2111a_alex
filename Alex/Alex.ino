@@ -563,7 +563,7 @@ void handleCommand(TPacket *command)
         int speed = command->params[0];
         int val = pwmVal(speed);
         analogWrite(LF, val);
-        analogWrite(RF, val);
+        analogWrite(RF, val*0.95);
         digitalWrite(LR, LOW);
         digitalWrite(RR, LOW);
         //forward((float) command->params[0], (float) command->params[1]);
@@ -574,8 +574,8 @@ void handleCommand(TPacket *command)
         int val = pwmVal(speed);
         digitalWrite(LF, LOW);
         digitalWrite(RF, LOW);
-        digitalWrite(LR, val);
-        digitalWrite(RR, val);
+        analogWrite(LR, val);
+        analogWrite(RR, val*0.95);
         //reverse((float) command->params[0], (float) command->params[1]);
       break;
     // For rotate commands, param[0] = angle, param[1] undefined.

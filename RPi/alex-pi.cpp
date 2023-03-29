@@ -12,6 +12,10 @@
 #define PORT_NAME			"/dev/ttyACM0"
 #define BAUD_RATE			B9600
 
+// Initialise current states
+int current_speed = 100;
+int current_angle = 90;
+
 int exitFlag=0;
 sem_t _xmitSema;
 
@@ -181,24 +185,24 @@ void getParams(TPacket *commandPacket, int* command_parameter)
 	commandPacket->params[1] = 80;
 }
 
-void sendCommand(char command, int* curr_speed, int* curr_angle)
+void sendCommand(char command)
 {
 	switch(command)
 	{
 		case '1':
-			*curr_speed = 100;
+			curr_speed = 100;
 			return;
 		
 		case '2':
-			*curr_speed = 80;
+			curr_speed = 80;
 			return;
 
 		case '3':
-			*curr_speed = 60;
+			curr_speed = 60;
 			return;
 
 		case '4':
-			*curr_speed = 40;
+			curr_speed = 40;
 			return;
 
 		default:
@@ -213,14 +217,16 @@ void sendCommand(char command, int* curr_speed, int* curr_angle)
 	{
 		// movement commands
 		case 'w':
-			getParams(&commandPacket, curr_speed);
+			//getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_FORWARD;
+			command.params[0] = current_speed;
 			sendPacket(&commandPacket);
 			break;
 
 		case 's':
-			getParams(&commandPacket, curr_speed);
+			// getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
+			command.params[0] = current_speed;
 			sendPacket(&commandPacket);
 			break;
 
@@ -320,9 +326,7 @@ int main()
 
 	printf("Command (w=forward, s=reverse, a=turn left 90deg, d=turn right 90deg, space=stop, esc=quit, ignore the rest: ...c=clear stats, g=get stats)\n");
 
-	// Initialise current states
-	int current_speed = 100;
-	int current_angle = 90;
+	
 
 	while(!exitFlag)
 	{
@@ -333,7 +337,7 @@ int main()
 		initTermios(0);
 		read(0, &ch, 1);		
 
-		sendCommand(ch, &current_speed, &current_angle);
+		sendCommand(ch);
 		resetTermios();
 	}
 
