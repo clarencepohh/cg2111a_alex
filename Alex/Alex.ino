@@ -555,13 +555,18 @@ void initializeState()
 
 void handleCommand(TPacket *command)
 {
+  int speed;
+  int val;
+  int rotate_power;
+  int rotate_power_pwm;
+  int rotate_angle;
   switch(command->command)
   {
     // For movement commands, param[0] = speed, param[1] undefined.
     case COMMAND_FORWARD:
         sendOK();
-        int speed = command->params[0];
-        int val = pwmVal(speed);
+        speed = command->params[0];
+        val = pwmVal(speed);
         analogWrite(LF, val);
         analogWrite(RF, val*0.95);
         digitalWrite(LR, LOW);
@@ -570,8 +575,8 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_REVERSE:
         sendOK();
-        int speed = command->params[0];
-        int val = pwmVal(speed);
+        speed = command->params[0];
+        val = pwmVal(speed);
         digitalWrite(LF, LOW);
         digitalWrite(RF, LOW);
         analogWrite(LR, val);
@@ -581,19 +586,37 @@ void handleCommand(TPacket *command)
     // For rotate commands, param[0] = angle, param[1] undefined.
     case COMMAND_TURN_RIGHT:
         sendOK();
-        //digitalWrite(LF, HIGH);
-        //digitalWrite(RF, LOW);
-        //digitalWrite(LR, LOW);
-        //digitalWrite(RR, HIGH);
-        right((float) 1.6*(command->params[0]), (float) command->params[1]);
+        rotate_angle = command->params[0];
+        rotate_power = command->params[1];
+        rotate_power_pwm = pwmVal(rotate_power);
+
+        analogWrite(LF, rotate_power_pwm);
+        analogWrite(RF, 0);
+        analogWrite(LR, 0);
+        analogWrite(RR, rotate_power_pwm);
+        delay(10*rotate_angle);
+        analogWrite(LF, 0);
+        analogWrite(RF, 0);
+        analogWrite(LR, 0);
+        analogWrite(RR, 0);
+        //right((float) 1.6*(command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_TURN_LEFT:
         sendOK();
-        // digitalWrite(LF, LOW);
-        // digitalWrite(RF, HIGH);
-        // digitalWrite(LR, HIGH);
-        // digitalWrite(RR, LOW);
-        left((float) (command->params[0]), (float) command->params[1]);
+        rotate_angle = command->params[0];
+        rotate_power = command->params[1];
+        rotate_power_pwm = pwmVal(rotate_power);
+
+        analogWrite(LF, 0);
+        analogWrite(RF, rotate_power_pwm);
+        analogWrite(LR, rotate_power_pwm);
+        analogWrite(RR, 0);
+        delay(10*rotate_angle);
+        analogWrite(LF, 0);
+        analogWrite(RF, 0);
+        analogWrite(LR, 0);
+        analogWrite(RR, 0);
+        // left((float) (command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_STOP:
         sendOK();

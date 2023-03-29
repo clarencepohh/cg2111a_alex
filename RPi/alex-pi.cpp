@@ -235,6 +235,7 @@ void sendCommand(char command)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 90;
+			commandPacket.params[1] = 90;
 			sendPacket(&commandPacket);
 			break;
 
@@ -242,6 +243,7 @@ void sendCommand(char command)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 90;
+			commandPacket.params[1] = 90;
 			sendPacket(&commandPacket);
 			break;
 
@@ -249,6 +251,7 @@ void sendCommand(char command)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 60;
+			commandPacket.params[1] = 95;
 			sendPacket(&commandPacket);
 			break;
 
@@ -256,6 +259,7 @@ void sendCommand(char command)
 			getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 60;
+			commandPacket.params[1] = 95;
 			sendPacket(&commandPacket);
 			break;
 
