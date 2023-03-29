@@ -5,14 +5,13 @@
 ## 2. RPi Communication with Arduino
 ```
 gcc alex-pi.cpp serial.cpp serialize.cpp –pthread –o Alex-pi
-
 ./Alex-Pi
 ```
 
 ## 3. RPi RPLidar
 ```
 source ~/cg2111a/devel/setup.bash
-'''
+```
 
 ### 3.1.1 ROS networking (RPi)
 ```
