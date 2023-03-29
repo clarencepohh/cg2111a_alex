@@ -268,7 +268,7 @@ void sendCommand(char command)
 		case 'z':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 50;
+			commandPacket.params[0] = 70;
 			commandPacket.params[1] = 400;
 			sendPacket(&commandPacket);
 			break;
@@ -276,7 +276,7 @@ void sendCommand(char command)
 		case 'c':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 50;
+			commandPacket.params[0] = 70;
 			commandPacket.params[1] = 400;
 			sendPacket(&commandPacket);
 			break;

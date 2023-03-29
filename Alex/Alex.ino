@@ -610,7 +610,7 @@ void handleCommand(TPacket *command)
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
-        analog_write(LF, val*0.96);
+        analog_write(LF, val*0.92);
         analog_write(RF, val);
         analog_write(LR, 0);
         analog_write(RR, 0);
@@ -663,14 +663,15 @@ void handleCommand(TPacket *command)
         val = pwmVal(speed);
         delay_ms = command->params[1];
 
-        analog_write(LF, val);
+        analog_write(LF, 256);
         analog_write(RF, 0);
         analog_write(LR, 0);
+        analog_write(RR, 256);
+        delay(100);
+        analog_write(LF, val);
         analog_write(RR, val);
         delay(delay_ms);
         analog_write(LF, 0);
-        analog_write(RF, 0);
-        analog_write(LR, 0);
         analog_write(RR, 0);
         //right((float) 1.6*(command->params[0]), (float) command->params[1]);
       break;
