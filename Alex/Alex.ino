@@ -569,6 +569,7 @@ void handleCommand(TPacket *command)
         analogWrite(RF, val);
         analogWrite(LR, 0);
         analogWrite(RR, 0);
+        break;
 
     case COMMAND_FORWARD:
         sendOK();
