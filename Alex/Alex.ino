@@ -610,8 +610,10 @@ void handleCommand(TPacket *command)
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
-        OCR0A = val;
-        OCR1B = val;
+        analog_write(LF, val*0.96);
+        analog_write(RF, val);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
       break;
 
     case COMMAND_FORWARD:
