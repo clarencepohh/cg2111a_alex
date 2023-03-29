@@ -557,44 +557,65 @@ void handleCommand(TPacket *command)
 {
   int speed;
   int val;
-  int rotate_power;
-  int rotate_power_pwm;
-  int rotate_angle;
+  int delay_ms;
   switch(command->command)
   {
-    // For movement commands, param[0] = speed, param[1] undefined.
-    case COMMAND_FORWARD:
+    // For movement commands, param[0] = speed, param[1] delay.
+    case COMMAND_RUSH:
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
         analogWrite(LF, val);
-        analogWrite(RF, val*0.95);
+        analogWrite(RF, val);
+        analogWrite(LR, 0);
+        analogWrite(RR, 0);
+
+    case COMMAND_FORWARD:
+        sendOK();
+        speed = command->params[0];
+        val = pwmVal(speed);
+        delay_ms = command->params[1];
+
+        analogWrite(LF, val);
+        analogWrite(RF, val);
         digitalWrite(LR, LOW);
         digitalWrite(RR, LOW);
+        delay(delay_ms);
+        analogWrite(LF, 0);
+        analogWrite(RF, 0);
+        analogWrite(LR, 0);
+        analogWrite(RR, 0);
         //forward((float) command->params[0], (float) command->params[1]);
       break;
     case COMMAND_REVERSE:
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
+        delay_ms = command->params[1];
+
         digitalWrite(LF, LOW);
         digitalWrite(RF, LOW);
-        analogWrite(LR, val);
-        analogWrite(RR, val*0.95);
+        analogWrite(LR, 200);
+        analogWrite(RR, 200);
+        delay(delay_ms);
+        analogWrite(LF, 0);
+        analogWrite(RF, 0);
+        analogWrite(LR, 0);
+        analogWrite(RR, 0);
         //reverse((float) command->params[0], (float) command->params[1]);
       break;
     // For rotate commands, param[0] = angle, param[1] undefined.
     case COMMAND_TURN_RIGHT:
         sendOK();
-        rotate_angle = command->params[0];
-        rotate_power = command->params[1];
-        rotate_power_pwm = pwmVal(rotate_power);
+        speed = command->params[0];
+        val = pwmVal(speed);
+        delay_ms = command->params[1];
 
-        analogWrite(LF, rotate_power_pwm);
+        analogWrite(LF, val);
         analogWrite(RF, 0);
         analogWrite(LR, 0);
-        analogWrite(RR, rotate_power_pwm);
-        delay(10*rotate_angle);
+        analogWrite(RR, val);
+        delay(delay_ms);
         analogWrite(LF, 0);
         analogWrite(RF, 0);
         analogWrite(LR, 0);
@@ -603,15 +624,15 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_TURN_LEFT:
         sendOK();
-        rotate_angle = command->params[0];
-        rotate_power = command->params[1];
-        rotate_power_pwm = pwmVal(rotate_power);
+        speed = command->params[0];
+        val = pwmVal(speed);
+        delay_ms = command->params[1];
 
         analogWrite(LF, 0);
-        analogWrite(RF, rotate_power_pwm);
-        analogWrite(LR, rotate_power_pwm);
+        analogWrite(RF, val);
+        analogWrite(LR, val);
         analogWrite(RR, 0);
-        delay(10*rotate_angle);
+        delay(delay_ms);
         analogWrite(LF, 0);
         analogWrite(RF, 0);
         analogWrite(LR, 0);

@@ -219,14 +219,16 @@ void sendCommand(char command)
 		case 'w':
 			//getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_FORWARD;
-			commandPacket.params[0] = current_speed;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
 
 		case 's':
 			// getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
-			commandPacket.params[0] = current_speed;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
 
@@ -234,49 +236,47 @@ void sendCommand(char command)
 		case 'a':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 90;
-			commandPacket.params[1] = 90;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 250;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'd':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 90;
-			commandPacket.params[1] = 90;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 250;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'q':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 60;
-			commandPacket.params[1] = 95;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 150;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'e':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 60;
-			commandPacket.params[1] = 95;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 150;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'z':
 			// getParams(&commandPacket, curr_angle);
-			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 30;
-			commandPacket.params[1] = 100;
+			commandPacket.command = COMMAND_RUSH;
 			sendPacket(&commandPacket);
+			commandPacket.params[0] = 100;
 			break;
 
 		case 'c':
 			// getParams(&commandPacket, curr_angle);
-			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 30;
-			commandPacket.params[1] = 100;
+			commandPacket.command = COMMAND_RUSH;
 			sendPacket(&commandPacket);
+			commandPacket.params[0] = 80;
 			break;
 
 		// misc commands
