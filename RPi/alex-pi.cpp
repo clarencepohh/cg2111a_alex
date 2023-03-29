@@ -190,19 +190,19 @@ void sendCommand(char command)
 	switch(command)
 	{
 		case '1':
-			curr_speed = 100;
+			current_speed = 100;
 			return;
 		
 		case '2':
-			curr_speed = 80;
+			current_speed = 80;
 			return;
 
 		case '3':
-			curr_speed = 60;
+			current_speed = 60;
 			return;
 
 		case '4':
-			curr_speed = 40;
+			current_speed = 40;
 			return;
 
 		default:
