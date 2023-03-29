@@ -232,7 +232,7 @@ void sendCommand(char command)
 
 		// rotation commands
 		case 'a':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 90;
 			commandPacket.params[1] = 90;
@@ -240,7 +240,7 @@ void sendCommand(char command)
 			break;
 
 		case 'd':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 90;
 			commandPacket.params[1] = 90;
@@ -248,7 +248,7 @@ void sendCommand(char command)
 			break;
 
 		case 'q':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 60;
 			commandPacket.params[1] = 95;
@@ -256,7 +256,7 @@ void sendCommand(char command)
 			break;
 
 		case 'e':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 60;
 			commandPacket.params[1] = 95;
@@ -264,7 +264,7 @@ void sendCommand(char command)
 			break;
 
 		case 'z':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
 			commandPacket.params[0] = 30;
 			commandPacket.params[1] = 100;
@@ -272,7 +272,7 @@ void sendCommand(char command)
 			break;
 
 		case 'c':
-			getParams(&commandPacket, curr_angle);
+			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
 			commandPacket.params[0] = 30;
 			commandPacket.params[1] = 100;
