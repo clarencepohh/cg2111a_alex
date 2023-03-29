@@ -219,14 +219,14 @@ void sendCommand(char command)
 		case 'w':
 			//getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_FORWARD;
-			command.params[0] = current_speed;
+			commandPacket.params[0] = current_speed;
 			sendPacket(&commandPacket);
 			break;
 
 		case 's':
 			// getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
-			command.params[0] = current_speed;
+			commandPacket.params[0] = current_speed;
 			sendPacket(&commandPacket);
 			break;
 
