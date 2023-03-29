@@ -219,16 +219,16 @@ void sendCommand(char command)
 		case 'w':
 			//getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_FORWARD;
-			commandPacket.params[0] = 80;
-			commandPacket.params[1] = 200;
+			commandPacket.params[0] = 50;
+			commandPacket.params[1] = 500;
 			sendPacket(&commandPacket);
 			break;
 
 		case 's':
 			// getParams(&commandPacket, curr_speed);
 			commandPacket.command = COMMAND_REVERSE;
-			commandPacket.params[0] = 80;
-			commandPacket.params[1] = 200;
+			commandPacket.params[0] = 50;
+			commandPacket.params[1] = 500;
 			sendPacket(&commandPacket);
 			break;
 
@@ -297,7 +297,7 @@ void sendCommand(char command)
 			sendPacket(&commandPacket);
 			break;
 
-		case 27:
+		case 27: //escape key
 			exitFlag=1;
 			break;
 

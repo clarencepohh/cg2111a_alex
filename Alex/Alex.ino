@@ -35,7 +35,7 @@ volatile TDirection dir = STOP;
 #define LF                  6   // Left forward pin
 #define LR                  5   // Left reverse pin
 #define RF                  10  // Right forward pin
-#define RR                  11  // Right reverse pin
+#define RR                  9  // Right reverse pin
 
 // PI, for calculating turn circumference
 #define PI 3.141592654
@@ -351,6 +351,10 @@ void writeSerial(const char *buffer, int len)
   Serial.write(buffer, len);
 }
 
+void disableADC() {
+  PRR |= (1 << PRADC);
+}
+
 /*
  * Alex's motor drivers.
  * 
@@ -367,6 +371,8 @@ void setupMotors()
    *    B1IN - Pin 10, PB2, OC1B
    *    B2In - pIN 11, PB3, OC2A
    */
+  DDRD |= (1 << 5) | (1 << 6); // Set pins 5 and 6 to output
+  DDRB |= (1 << 2) | (1 << 1); // Set pins 10 and 9 to output
 }
 
 // Start the PWM for Alex's motors.
@@ -374,8 +380,42 @@ void setupMotors()
 // blank.
 void startMotors()
 {
-  
+  // Set up timer 0 for PWM on pins 5 and 6
+  // TCNT0 = 0;
+  // TCCR0A = 0b10100001; // Clear when up-counting, set when down-counting
+  // TCCR0B = 0b00000011; // Phase correct PWM, prescaler = 64
+  // TIMSK0 = 0b110; // Enable PWM interrupts
+  // OCR0A = 0;
+  // OCR0B = 0;
+
+  // // Set up timer 1 for PWM on pins 9 and 10
+  // TCNT1 = 0;
+  // TCCR1A = 0b10100001;
+  // TCCR1B = 0b00000011;
+  // TIMSK1 |= 0b110;
+  // OCR1AH = 0;
+  // OCR1AL = 0;
+  // OCR1BH = 0;
+  // OCR1BL = 0;
+
 }
+
+void analog_write(int pin, int val) {
+  analogWrite(pin, val);
+  // if (pin == 5) {
+  //   OCR0B = val;
+  // }
+  // else if (pin == 6) {
+  //   OCR0A = val;
+  // }
+  // else if (pin == 9) {
+  //   OCR1AH = 0;
+  //   OCR1AL = val;
+  // }
+  // else if (pin == 10) {
+  //   OCR1BH = 0;
+  //   OCR1BL = val;
+};
 
 // Convert percentages to PWM values
 int pwmVal(float speed)
@@ -553,6 +593,11 @@ void initializeState()
   clearCounters();
 }
 
+// LF = OC0A
+// LR = OC0B
+// RF = OC1B
+// RR = OC1A
+
 void handleCommand(TPacket *command)
 {
   int speed;
@@ -565,10 +610,8 @@ void handleCommand(TPacket *command)
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
-        analogWrite(LF, val);
-        analogWrite(RF, val);
-        analogWrite(LR, 0);
-        analogWrite(RR, 0);
+        OCR0A = val;
+        OCR1B = val;
       break;
 
     case COMMAND_FORWARD:
@@ -576,16 +619,22 @@ void handleCommand(TPacket *command)
         speed = command->params[0];
         val = pwmVal(speed);
         delay_ms = command->params[1];
+        // OCR0A = val;
+        // OCR1B = val;
+        // delay(delay_ms);
+        // OCR0A = 0;
+        // OCR1B = 0;
 
-        analogWrite(LF, val);
-        analogWrite(RF, val);
-        digitalWrite(LR, LOW);
-        digitalWrite(RR, LOW);
+        analog_write(LF, val);
+        analog_write(RF, val);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
         delay(delay_ms);
-        analogWrite(LF, 0);
-        analogWrite(RF, 0);
-        analogWrite(LR, 0);
-        analogWrite(RR, 0);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
+
         //forward((float) command->params[0], (float) command->params[1]);
       break;
     case COMMAND_REVERSE:
@@ -594,15 +643,15 @@ void handleCommand(TPacket *command)
         val = pwmVal(speed);
         delay_ms = command->params[1];
 
-        digitalWrite(LF, LOW);
-        digitalWrite(RF, LOW);
-        analogWrite(LR, 200);
-        analogWrite(RR, 200);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 200);
+        analog_write(RR, 200);
         delay(delay_ms);
-        analogWrite(LF, 0);
-        analogWrite(RF, 0);
-        analogWrite(LR, 0);
-        analogWrite(RR, 0);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
         //reverse((float) command->params[0], (float) command->params[1]);
       break;
     // For rotate commands, param[0] = angle, param[1] undefined.
@@ -612,15 +661,15 @@ void handleCommand(TPacket *command)
         val = pwmVal(speed);
         delay_ms = command->params[1];
 
-        analogWrite(LF, val);
-        analogWrite(RF, 0);
-        analogWrite(LR, 0);
-        analogWrite(RR, val);
+        analog_write(LF, val);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, val);
         delay(delay_ms);
-        analogWrite(LF, 0);
-        analogWrite(RF, 0);
-        analogWrite(LR, 0);
-        analogWrite(RR, 0);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
         //right((float) 1.6*(command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_TURN_LEFT:
@@ -629,23 +678,23 @@ void handleCommand(TPacket *command)
         val = pwmVal(speed);
         delay_ms = command->params[1];
 
-        analogWrite(LF, 0);
-        analogWrite(RF, val);
-        analogWrite(LR, val);
-        analogWrite(RR, 0);
+        analog_write(LF, 0);
+        analog_write(RF, val);
+        analog_write(LR, val);
+        analog_write(RR, 0);
         delay(delay_ms);
-        analogWrite(LF, 0);
-        analogWrite(RF, 0);
-        analogWrite(LR, 0);
-        analogWrite(RR, 0);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
         // left((float) (command->params[0]), (float) command->params[1]);
       break;
     case COMMAND_STOP:
         sendOK();
-        digitalWrite(LF, LOW);
-        digitalWrite(RF, LOW);
-        digitalWrite(LR, LOW);
-        digitalWrite(RR, LOW);
+        analog_write(LF, 0);
+        analog_write(RF, 0);
+        analog_write(LR, 0);
+        analog_write(RR, 0);
         //stop();
       break;
     case COMMAND_GET_STATS:
@@ -712,6 +761,7 @@ void setup() {
   setupMotors();
   startMotors();
   enablePullups();
+  disableADC();
   initializeState();
   sei();
 }
