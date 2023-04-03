@@ -10,23 +10,19 @@ gcc alex-pi.cpp serial.cpp serialize.cpp –pthread –o Alex-pi
 
 ## 3. RPi RPLidar
 ```
-source ~/cg2111a/devel/setup.bash
+source ~/cg2111a/devel/setup.bash (put in bashrc)
 ```
 
 ### 3.1.1 ROS networking (RPi)
 ```
 roscore
-export ROS_MASTER_URI=http://192.168.86.63:11311
 
 roslaunch rplidar_ros rplidar.launch
 ```
 
 ### 3.1.2 ROS networking (desktop)
 ```
-source/opt/ros/noetic/setup.bash
-export ROS_MASTER_URI=http://192.168.86.63:11311
-rostopic list
-rosrun rviz rviz
+roslaunch hector_slam_launch tutorial.launch
 ```
 
 ### 3.2 rviz on RPi
