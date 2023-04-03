@@ -16,7 +16,7 @@ source ~/cg2111a/devel/setup.bash
 ### 3.1.1 ROS networking (RPi)
 ```
 roscore
-export ROS_MASTER_URI=http://192.168.1.1:11311
+export ROS_MASTER_URI=http://192.168.86.63:11311
 
 roslaunch rplidar_ros rplidar.launch
 ```
@@ -24,7 +24,7 @@ roslaunch rplidar_ros rplidar.launch
 ### 3.1.2 ROS networking (desktop)
 ```
 source/opt/ros/noetic/setup.bash
-export ROS_MASTER_URI=http://192.168.1.1:11311
+export ROS_MASTER_URI=http://192.168.86.63:11311
 rostopic list
 rosrun rviz rviz
 ```
