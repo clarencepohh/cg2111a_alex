@@ -611,7 +611,7 @@ void handleCommand(TPacket *command)
         speed = command->params[0];
         val = pwmVal(speed);
         analog_write(LF, val*0.92);
-        analog_write(RF, val);
+        analog_write(RF, val*1.1);
         analog_write(LR, 0);
         analog_write(RR, 0);
       break;
@@ -694,6 +694,11 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_STOP:
         sendOK();
+        analog_write(LF, 150);
+        analog_write(RF, 150);
+        analog_write(LR, 150);
+        analog_write(RR, 150);
+        delay(200);
         analog_write(LF, 0);
         analog_write(RF, 0);
         analog_write(LR, 0);

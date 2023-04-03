@@ -284,7 +284,7 @@ void sendCommand(char command)
 		case 'x':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_RUSH;
-			commandPacket.params[0] = 80;
+			commandPacket.params[0] = 90;
 			sendPacket(&commandPacket);
 			break;
 
