@@ -355,6 +355,10 @@ void disableADC() {
   PRR |= (1 << PRADC);
 }
 
+void enableBuzzer() {
+  DDRB |= (1 << 5); // Set pin 13 to output
+}
+
 /*
  * Alex's motor drivers.
  * 
@@ -393,10 +397,8 @@ void startMotors()
   // TCCR1A = 0b10100001;
   // TCCR1B = 0b00000011;
   // TIMSK1 |= 0b110;
-  // OCR1AH = 0;
-  // OCR1AL = 0;
-  // OCR1BH = 0;
-  // OCR1BL = 0;
+  // OCR1A = 0;
+  // OCR1B = 0;
 
 }
 
@@ -409,12 +411,11 @@ void analog_write(int pin, int val) {
   //   OCR0A = val;
   // }
   // else if (pin == 9) {
-  //   OCR1AH = 0;
   //   OCR1AL = val;
   // }
   // else if (pin == 10) {
-  //   OCR1BH = 0;
   //   OCR1BL = val;
+  // }
 };
 
 // Convert percentages to PWM values
@@ -427,7 +428,7 @@ int pwmVal(float speed)
     speed = 100.0;
 
   return (int) ((speed / 100.0) * 255.0);
-}
+};
 
 // Move Alex forward "dist" cm at speed "speed".
 // "speed" is expressed as a percentage. E.g. 50 is
@@ -446,17 +447,17 @@ void forward(float dist, float speed)
   newDist = forwardDist + deltaDist;
 
   // For now we will ignore dist and move
-  // forward indefinitely. We will fix this
+  // forward indefinitely . We will fix this
   // in Week 9.
 
   // LF = Left forward pin, LR = Left reverse pin
   // RF = Right forward pin, RR = Right reverse pin
   // This will be replaced later with bare-metal code.
   
-  analogWrite(LF, val);
-  analogWrite(RF, val * 0.95);
-  analogWrite(LR, 0);
-  analogWrite(RR, 0);
+  // analogWrite(LF, val);
+  // analogWrite(RF, val * 0.95);
+  // analogWrite(LR, 0);
+  // analogWrite(RR, 0);
 }
 
 // Reverse Alex "dist" cm at speed "speed".
@@ -482,10 +483,10 @@ void reverse(float dist, float speed)
   // LF = Left forward pin, LR = Left reverse pin
   // RF = Right forward pin, RR = Right reverse pin
   // This will be replaced later with bare-metal code.
-  analogWrite(LR, val);
-  analogWrite(RR, val * 0.95);
-  analogWrite(LF, 0);
-  analogWrite(RF, 0);
+  // analogWrite(LR, val);
+  // analogWrite(RR, val * 0.95);
+  // analogWrite(LF, 0);
+  // analogWrite(RF, 0);
 }
 
 unsigned long ComputeDeltaTicks(float ang)
@@ -517,10 +518,10 @@ void left(float ang, float speed)
   // We will also replace this code with bare-metal later.
   // To turn left we reverse the left wheel and move
   // the right wheel forward.
-  analogWrite(LR, val);
-  analogWrite(RF, val);
-  analogWrite(LF, 0);
-  analogWrite(RR, 0);
+  // analogWrite(LR, val);
+  // analogWrite(RF, val);
+  // analogWrite(LF, 0);
+  // analogWrite(RR, 0);
 }
 
 // Turn Alex right "ang" degrees at speed "speed".
@@ -545,10 +546,10 @@ void right(float ang, float speed)
   // We will also replace this code with bare-metal later.
   // To turn right we reverse the right wheel and move
   // the left wheel forward.
-  analogWrite(RR, val);
-  analogWrite(LF, val);
-  analogWrite(LR, 0);
-  analogWrite(RF, 0);
+  // analogWrite(RR, val);
+  // analogWrite(LF, val);
+  // analogWrite(LR, 0);
+  // analogWrite(RF, 0);
 }
 
 // Stop Alex. To replace with bare-metal code later.
@@ -556,10 +557,10 @@ void stop()
 {
   dir = STOP;
   
-  analogWrite(LF, 0);
-  analogWrite(LR, 0);
-  analogWrite(RF, 0);
-  analogWrite(RR, 0);
+  // analogWrite(LF, 0);
+  // analogWrite(LR, 0);
+  // analogWrite(RF, 0);
+  // analogWrite(RR, 0);
 }
 
 /*
@@ -610,8 +611,8 @@ void handleCommand(TPacket *command)
         sendOK();
         speed = command->params[0];
         val = pwmVal(speed);
-        analog_write(LF, val*0.92);
-        analog_write(RF, val*1.1);
+        analog_write(LF, val);
+        analog_write(RF, val*0.85);
         analog_write(LR, 0);
         analog_write(RR, 0);
       break;
@@ -707,11 +708,16 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_SOUND:
         sendOK();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
           tone(13, 950, 600);
           delay(200);
           tone(13, 700, 400);
+          delay(200);
         }
+      break;
+    case COMMAND_COLOUR:
+        sendOK();
+        // sendMesage();
       break;
     case COMMAND_GET_STATS:
         sendStatus();
@@ -779,6 +785,7 @@ void setup() {
   enablePullups();
   disableADC();
   initializeState();
+  enableBuzzer();
   sei();
 }
 
@@ -831,43 +838,43 @@ void loop() {
         sendBadChecksum();
       } 
       
-  if (deltaDist > 0) {
-    if (dir==FORWARD) {
-      if (forwardDist > newDist) {
-        deltaDist=0;
-        newDist=0;
-        stop();   
-      }
-    } else if (dir==BACKWARD) {
-      if (reverseDist > newDist) {
-        deltaDist=0;
-        newDist=0;
-        stop();   
-      }
-    } else if (dir == STOP) {
-      deltaDist=0;
-      newDist=0;
-      stop();
-    }
-  }
+  // if (deltaDist > 0) {
+  //   if (dir==FORWARD) {
+  //     if (forwardDist > newDist) {
+  //       deltaDist=0;
+  //       newDist=0;
+  //       stop();   
+  //     }
+  //   } else if (dir==BACKWARD) {
+  //     if (reverseDist > newDist) {
+  //       deltaDist=0;
+  //       newDist=0;
+  //       stop();   
+  //     }
+  //   } else if (dir == STOP) {
+  //     deltaDist=0;
+  //     newDist=0;
+  //     stop();
+  //   }
+  // }
 
-  if(deltaTicks > 0){
-    if (dir == LEFT){
-      if (leftReverseTicksTurns >= targetTicks){
-        deltaTicks = 0; 
-        targetTicks = 0;
-        stop();
-      }
-    } else if (dir == RIGHT){
-      if (rightReverseTicksTurns >= targetTicks){
-        deltaTicks = 0; 
-        targetTicks = 0;
-        stop();
-      }
-    } else if (dir == STOP){
-      deltaTicks = 0; 
-      targetTicks = 0;
-      stop();
-    }
-  }
+  // if(deltaTicks > 0){
+  //   if (dir == LEFT){
+  //     if (leftReverseTicksTurns >= targetTicks){
+  //       deltaTicks = 0; 
+  //       targetTicks = 0;
+  //       stop();
+  //     }
+  //   } else if (dir == RIGHT){
+  //     if (rightReverseTicksTurns >= targetTicks){
+  //       deltaTicks = 0; 
+  //       targetTicks = 0;
+  //       stop();
+  //     }
+  //   } else if (dir == STOP){
+  //     deltaTicks = 0; 
+  //     targetTicks = 0;
+  //     stop();
+  //   }
+  // }
 }

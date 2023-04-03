@@ -284,7 +284,7 @@ void sendCommand(char command)
 		case 'x':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_RUSH;
-			commandPacket.params[0] = 90;
+			commandPacket.params[0] = 100;
 			sendPacket(&commandPacket);
 			break;
 
@@ -302,6 +302,11 @@ void sendCommand(char command)
 
 		case 'p':
 			commandPacket.command = COMMAND_SOUND;
+			sendPacket(&commandPacket);
+			break;
+
+		case 'k':
+			commandPacket.command = COMMAND_COLOUR;
 			sendPacket(&commandPacket);
 			break;
 
