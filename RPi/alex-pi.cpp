@@ -252,23 +252,23 @@ void sendCommand(char command)
 		case 'q':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 70;
-			commandPacket.params[1] = 250;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'e':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 70;
-			commandPacket.params[1] = 250;
+			commandPacket.params[0] = 80;
+			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'z':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 60;
+			commandPacket.params[0] = 65;
 			commandPacket.params[1] = 800;
 			sendPacket(&commandPacket);
 			break;
@@ -276,7 +276,7 @@ void sendCommand(char command)
 		case 'c':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 60;
+			commandPacket.params[0] = 65;
 			commandPacket.params[1] = 800;
 			sendPacket(&commandPacket);
 			break;
@@ -297,6 +297,11 @@ void sendCommand(char command)
 		case 'C':
 			commandPacket.command = COMMAND_CLEAR_STATS;
 			commandPacket.params[0] = 0;
+			sendPacket(&commandPacket);
+			break;
+
+		case 'p':
+			commandPacket.command = COMMAND_SOUND;
 			sendPacket(&commandPacket);
 			break;
 

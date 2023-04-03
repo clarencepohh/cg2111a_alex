@@ -647,8 +647,8 @@ void handleCommand(TPacket *command)
 
         analog_write(LF, 0);
         analog_write(RF, 0);
-        analog_write(LR, 200);
-        analog_write(RR, 200);
+        analog_write(LR, val);
+        analog_write(RR, val);
         delay(delay_ms);
         analog_write(LF, 0);
         analog_write(RF, 0);
@@ -699,6 +699,17 @@ void handleCommand(TPacket *command)
         analog_write(LR, 0);
         analog_write(RR, 0);
         //stop();
+      break;
+    case COMMAND_SOUND:
+        sendOK();
+        tone(13, 950, 600);
+        tone(13, 700, 400);
+        tone(13, 950, 600);
+        tone(13, 700, 400);
+        tone(13, 950, 600);
+        tone(13, 700, 400);
+        tone(13, 950, 600);
+        tone(13, 700, 400);
       break;
     case COMMAND_GET_STATS:
         sendStatus();

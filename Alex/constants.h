@@ -42,6 +42,7 @@ typedef enum
   COMMAND_GET_STATS = 5,
   COMMAND_CLEAR_STATS = 6,
   COMMAND_RUSH = 7,
+  COMMAND_SOUND = 8
 } TCommandType;
 #endif
 
