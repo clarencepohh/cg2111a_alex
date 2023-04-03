@@ -667,7 +667,7 @@ void handleCommand(TPacket *command)
         analog_write(RF, 0);
         analog_write(LR, 0);
         analog_write(RR, 256);
-        delay(100);
+        delay(200);
         analog_write(LF, val);
         analog_write(RR, val);
         delay(delay_ms);
