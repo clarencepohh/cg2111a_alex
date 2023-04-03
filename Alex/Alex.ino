@@ -702,14 +702,11 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_SOUND:
         sendOK();
-        tone(13, 950, 600);
-        tone(13, 700, 400);
-        tone(13, 950, 600);
-        tone(13, 700, 400);
-        tone(13, 950, 600);
-        tone(13, 700, 400);
-        tone(13, 950, 600);
-        tone(13, 700, 400);
+        for (int i = 0; i < 3; i++) {
+          tone(13, 950, 600);
+          delay(200);
+          tone(13, 700, 400);
+        }
       break;
     case COMMAND_GET_STATS:
         sendStatus();
