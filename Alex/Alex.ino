@@ -390,8 +390,8 @@ void setupColour() {
 }
 
 void setupLED() {
-  pinMode(REDLED, OUTPUT);
-  pinMode(WHITELED, OUTPUT);
+  DDRD |= (1 << REDLED);
+  DDRD |= (1 << WHITELED);
   digitalWrite(REDLED, LOW);
   digitalWrite(WHITELED, LOW);
   // DDRD |= ((1 << REDLED) | (1 << WHITELED)); // Set LED pins to output
@@ -779,21 +779,13 @@ void handleCommand(TPacket *command)
         for (int i = 0; i < 5; i++) {
           digitalWrite(REDLED, HIGH);
           digitalWrite(WHITELED, LOW);
-          delay(500);
+          tone(13, 950, 600);
+          delay(200);
           digitalWrite(REDLED, LOW);
           digitalWrite(WHITELED, HIGH);
-          delay(500);
+          tone(13, 700, 400);
+          delay(200);
         }
-        // for (int i = 0; i < 5; i++) {
-        //   PORTD |= (1 << REDLED);
-        //   PORTD &= ~(1 << WHITELED);
-        //   tone(13, 950, 600);
-        //   delay(200);
-        //   PORTD &= ~(1 << REDLED);
-        //   PORTD |= (1 << WHITELED);
-        //   tone(13, 700, 400);
-        //   delay(200);
-        // }
         digitalWrite(REDLED, LOW);
         digitalWrite(WHITELED, LOW);
       break;
