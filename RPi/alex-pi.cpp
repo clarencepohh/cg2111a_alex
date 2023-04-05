@@ -184,9 +184,7 @@ void getParams(TPacket *commandPacket, int* command_parameter)
 
 void sendCommand(char command)
 {
-	
 	TPacket commandPacket;
-
 	commandPacket.packetType = PACKET_TYPE_COMMAND;
 
 	switch(command)

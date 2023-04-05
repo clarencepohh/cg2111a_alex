@@ -878,6 +878,7 @@ void setup() {
   enableBuzzer();
   setupColour();
   setupUltrasonic();
+  seupLED();
   sei();
 }
 
