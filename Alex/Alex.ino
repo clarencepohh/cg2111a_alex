@@ -391,6 +391,7 @@ void setupColour() {
 
 void setupLED() {
   DDRD |= (1 << REDLED) | (1 << WHITELED); // Set LED pins to output
+  PORTD &= ~(1 << REDLED) & ~(1 << WHITELED); // Set LED pins to low
 }
 
 /*
