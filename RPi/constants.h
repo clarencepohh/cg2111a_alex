@@ -43,7 +43,8 @@ typedef enum
   COMMAND_CLEAR_STATS = 6,
   COMMAND_RUSH = 7,
   COMMAND_SOUND = 8,
-  COMMAND_COLOUR = 9
+  COMMAND_COLOUR = 9,
+  COMMAND_HUMP = 10
 } TCommandType;
 #endif
 

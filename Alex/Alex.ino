@@ -642,7 +642,14 @@ void handleCommand(TPacket *command)
   int delay_ms;
   switch(command->command)
   {
-    // For movement commands, param[0] = speed, param[1] delay.
+    case COMMAND_HUMP:
+      sendOK();
+      speed = command->params[0];
+      val = pwmVal(speed);
+      analog_write(LF, val);
+      analog_write(RF, val*0.95);
+     break;
+
     case COMMAND_RUSH:
         sendOK();
         int dist;
@@ -651,14 +658,15 @@ void handleCommand(TPacket *command)
         dist = measure_distance();
         while (dist > 25){
             dist = measure_distance();
-            analog_write(LF, val*0.95);
-            analog_write(RF, val);
+            analog_write(LF, val);
+            analog_write(RF, val*0.95);
             delay(100);
         }         
         analog_write(LF, 0);
         analog_write(RF, 0);
       break;
 
+    // For movement commands, param[0] = speed, param[1] delay.
     case COMMAND_FORWARD:
         sendOK();
         speed = command->params[0];
@@ -671,7 +679,7 @@ void handleCommand(TPacket *command)
         // OCR1B = 0;
 
         analog_write(LF, val);
-        analog_write(RF, val);
+        analog_write(RF, val*0.95);
         analog_write(LR, 0);
         analog_write(RR, 0);
         delay(delay_ms);

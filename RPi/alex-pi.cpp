@@ -287,6 +287,12 @@ void sendCommand(char command)
 			commandPacket.params[0] = 90;
 			sendPacket(&commandPacket);
 			break;
+		
+		case 't':
+			commandPacket.command = COMMAND_HUMP;
+			commandPacket.params[0] = 90;
+			sendPacket(&commandPacket);
+			break;
 
 		// misc commands
 		case 32:
