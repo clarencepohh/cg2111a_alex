@@ -48,6 +48,10 @@ volatile TDirection dir = STOP;
 #define S2 A3
 #define sensor_out A4
 
+// ambulance lights
+#define REDLED 0
+#define WHITELED 1
+
 // PI, for calculating turn circumference
 #define PI 3.141592654
 
@@ -383,6 +387,10 @@ void setupColour() {
   pinMode(sensor_out, INPUT);
   digitalWrite(S0, HIGH);
   digitalWrite(S1, LOW);
+}
+
+void setupLED() {
+  DDRD |= (1 << REDLED) | (1 << WHITELED); // Set LED pins to output
 }
 
 /*
@@ -764,11 +772,17 @@ void handleCommand(TPacket *command)
     case COMMAND_SOUND:
         sendOK();
         for (int i = 0; i < 5; i++) {
+          PORTD |= (1 << REDLED);
+          PORTD &= ~(1 << WHITELED);
           tone(13, 950, 600);
           delay(200);
+          PORTD &= ~(1 << REDLED);
+          PORTD |= (1 << WHITELED);
           tone(13, 700, 400);
           delay(200);
         }
+        PORTD &= ~(1 << REDLED);
+        PORTD &= ~(1 << WHITELED);
       break;
     case COMMAND_COLOUR:
         sendOK();

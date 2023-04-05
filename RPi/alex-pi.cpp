@@ -12,9 +12,6 @@
 #define PORT_NAME			"/dev/ttyACM0"
 #define BAUD_RATE			B9600
 
-// Initialise current states
-int current_speed = 100;
-int current_angle = 90;
 
 int exitFlag=0;
 sem_t _xmitSema;
@@ -187,27 +184,6 @@ void getParams(TPacket *commandPacket, int* command_parameter)
 
 void sendCommand(char command)
 {
-	switch(command)
-	{
-		case '1':
-			current_speed = 100;
-			return;
-		
-		case '2':
-			current_speed = 80;
-			return;
-
-		case '3':
-			current_speed = 60;
-			return;
-
-		case '4':
-			current_speed = 40;
-			return;
-
-		default:
-			break;
-	}
 	
 	TPacket commandPacket;
 
