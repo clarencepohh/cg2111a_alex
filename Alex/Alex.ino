@@ -37,6 +37,17 @@ volatile TDirection dir = STOP;
 #define RF                  10  // Right forward pin
 #define RR                  9  // Right reverse pin
 
+//ultrasonic sensor
+#define trigPin 7
+#define echoPin 8 
+
+//colour sensor
+#define S1 A0
+#define S0 A1
+#define S3 A2
+#define S2 A3
+#define sensor_out A4
+
 // PI, for calculating turn circumference
 #define PI 3.141592654
 
@@ -359,6 +370,21 @@ void enableBuzzer() {
   DDRB |= (1 << 5); // Set pin 13 to output
 }
 
+void setupUltrasonic() {
+  DDRD |= (1 << 7); // Set pin 7 to output
+  DDRB &= ~(1 << 0); // Set pin 8 to input
+}
+
+void setupColour() {
+  pinMode(A0, OUTPUT);
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  pinMode(sensor_out, INPUT);
+  digitalWrite(S0, HIGH);
+  digitalWrite(S1, LOW);
+}
+
 /*
  * Alex's motor drivers.
  * 
@@ -399,7 +425,6 @@ void startMotors()
   // TIMSK1 |= 0b110;
   // OCR1A = 0;
   // OCR1B = 0;
-
 }
 
 void analog_write(int pin, int val) {
@@ -599,6 +624,17 @@ void initializeState()
 // RF = OC1B
 // RR = OC1A
 
+int measure_distance() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  long duration = pulseIn(echoPin, HIGH);
+  int distance = duration * 0.0343 / 2;
+  return distance;
+}
+
 void handleCommand(TPacket *command)
 {
   int speed;
@@ -609,12 +645,19 @@ void handleCommand(TPacket *command)
     // For movement commands, param[0] = speed, param[1] delay.
     case COMMAND_RUSH:
         sendOK();
+        int dist;
         speed = command->params[0];
         val = pwmVal(speed);
-        analog_write(LF, val);
-        analog_write(RF, val*0.85);
-        analog_write(LR, 0);
-        analog_write(RR, 0);
+        dist = measure_distance();
+        while (dist > 20){
+            dist = measure_distance();
+            sendMessage("measuring");
+            analog_write(LF, val*0.95);
+            analog_write(RF, val);
+            delay(200);
+        }         
+        analog_write(LF, 0);
+        analog_write(RF, 0);
       break;
 
     case COMMAND_FORWARD:
@@ -717,7 +760,34 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_COLOUR:
         sendOK();
-        // sendMesage();
+        if (measure_distance() > 20){
+          sendMessage("CLOSER");
+          break;
+        }
+        // output colour form colour sensor
+        int red, green, blue;
+        digitalWrite(S2, LOW);
+        digitalWrite(S3, LOW);
+        red = pulseIn(sensor_out, LOW);
+        digitalWrite(S2, HIGH);
+        digitalWrite(S3, HIGH);
+        green = pulseIn(sensor_out, LOW);
+        // sendMessage("GREEN");
+        // char *green_msg = (char *) green;
+
+
+
+        // dbprintf("GREEN: %i", green);
+        // dbprintf("RED: %i", red);
+        if (red - green > 50) {
+          sendMessage("GREEN");
+        }
+        else if (green - red > 50) {
+          sendMessage("RED");
+        }
+        else {
+          sendMessage("HUH?");
+        }        
       break;
     case COMMAND_GET_STATS:
         sendStatus();
@@ -786,6 +856,8 @@ void setup() {
   disableADC();
   initializeState();
   enableBuzzer();
+  setupColour();
+  setupUltrasonic();
   sei();
 }
 
