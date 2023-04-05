@@ -773,6 +773,7 @@ void handleCommand(TPacket *command)
     case COMMAND_COLOUR:
         sendOK();
         if (measure_distance() > 20){
+          sendMessage("TOO FAR");
           break;
         }
         // output colour form colour sensor
@@ -783,13 +784,7 @@ void handleCommand(TPacket *command)
         digitalWrite(S2, HIGH);
         digitalWrite(S3, HIGH);
         green = pulseIn(sensor_out, LOW);
-        // sendMessage("GREEN");
-        // char *green_msg = (char *) green;
 
-
-
-        // dbprintf("GREEN: %i", green);
-        // dbprintf("RED: %i", red);
         if (red - green > 50) {
           sendMessage("GREEN");
         }
