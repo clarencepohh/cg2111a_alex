@@ -49,8 +49,8 @@ volatile TDirection dir = STOP;
 #define sensor_out A4
 
 // ambulance lights
-#define REDLED 0
-#define WHITELED 1
+#define REDLED 1
+#define WHITELED 0
 
 // PI, for calculating turn circumference
 #define PI 3.141592654
@@ -390,8 +390,12 @@ void setupColour() {
 }
 
 void setupLED() {
-  DDRD |= (1 << REDLED) | (1 << WHITELED); // Set LED pins to output
-  PORTD &= ~(1 << REDLED) & ~(1 << WHITELED); // Set LED pins to low
+  pinMode(REDLED, OUTPUT);
+  pinMode(WHITELED, OUTPUT);
+  digitalWrite(REDLED, LOW);
+  digitalWrite(WHITELED, LOW);
+  // DDRD |= ((1 << REDLED) | (1 << WHITELED)); // Set LED pins to output
+  // PORTD &= (~(1 << REDLED) & ~(1 << WHITELED)); // Set LED pins to low
 }
 
 /*
@@ -773,17 +777,25 @@ void handleCommand(TPacket *command)
     case COMMAND_SOUND:
         sendOK();
         for (int i = 0; i < 5; i++) {
-          PORTD |= (1 << REDLED);
-          PORTD &= ~(1 << WHITELED);
-          tone(13, 950, 600);
-          delay(200);
-          PORTD &= ~(1 << REDLED);
-          PORTD |= (1 << WHITELED);
-          tone(13, 700, 400);
-          delay(200);
+          digitalWrite(REDLED, HIGH);
+          digitalWrite(WHITELED, LOW);
+          delay(500);
+          digitalWrite(REDLED, LOW);
+          digitalWrite(WHITELED, HIGH);
+          delay(500);
         }
-        PORTD &= ~(1 << REDLED);
-        PORTD &= ~(1 << WHITELED);
+        // for (int i = 0; i < 5; i++) {
+        //   PORTD |= (1 << REDLED);
+        //   PORTD &= ~(1 << WHITELED);
+        //   tone(13, 950, 600);
+        //   delay(200);
+        //   PORTD &= ~(1 << REDLED);
+        //   PORTD |= (1 << WHITELED);
+        //   tone(13, 700, 400);
+        //   delay(200);
+        // }
+        digitalWrite(REDLED, LOW);
+        digitalWrite(WHITELED, LOW);
       break;
     case COMMAND_COLOUR:
         sendOK();
@@ -879,7 +891,7 @@ void setup() {
   enableBuzzer();
   setupColour();
   setupUltrasonic();
-  seupLED();
+  setupLED();
   sei();
 }
 
