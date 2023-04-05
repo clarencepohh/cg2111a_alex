@@ -212,16 +212,16 @@ void sendCommand(char command)
 		case 'q':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 45;
-			commandPacket.params[1] = 1000;
+			commandPacket.params[0] = 100;
+			commandPacket.params[1] = 300;
 			sendPacket(&commandPacket);
 			break;
 
 		case 'e':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 45;
-			commandPacket.params[1] = 1000;
+			commandPacket.params[0] = 100;
+			commandPacket.params[1] = 300;
 			sendPacket(&commandPacket);
 			break;
 
