@@ -651,10 +651,9 @@ void handleCommand(TPacket *command)
         dist = measure_distance();
         while (dist > 20){
             dist = measure_distance();
-            sendMessage("measuring");
             analog_write(LF, val*0.95);
             analog_write(RF, val);
-            delay(200);
+            delay(100);
         }         
         analog_write(LF, 0);
         analog_write(RF, 0);
@@ -761,7 +760,6 @@ void handleCommand(TPacket *command)
     case COMMAND_COLOUR:
         sendOK();
         if (measure_distance() > 20){
-          sendMessage("CLOSER");
           break;
         }
         // output colour form colour sensor
