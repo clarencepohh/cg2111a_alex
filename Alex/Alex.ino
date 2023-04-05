@@ -649,7 +649,7 @@ void handleCommand(TPacket *command)
         speed = command->params[0];
         val = pwmVal(speed);
         dist = measure_distance();
-        while (dist > 20){
+        while (dist > 30){
             dist = measure_distance();
             analog_write(LF, val*0.95);
             analog_write(RF, val);
