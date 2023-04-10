@@ -327,9 +327,7 @@ int main()
 	helloPacket.packetType = PACKET_TYPE_HELLO;
 	sendPacket(&helloPacket);
 
-	printf("Command (w=forward, s=reverse, a=turn left 90deg, d=turn right 90deg, space=stop, esc=quit, ignore the rest: ...c=clear stats, g=get stats)\n");
-
-	
+	printf("Command (w=forward, s=reverse, a=turn left, d=turn right, z=turn left less, c=turn right less, x=move forward fast until ultrasonic detects wall, t=rush forward, space=stop, p=beeper sound, k=colour senser, esc=quit,)\n");
 
 	while(!exitFlag)
 	{
