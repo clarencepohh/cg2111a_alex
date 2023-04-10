@@ -306,12 +306,6 @@ void sendCommand(char command)
 			sendPacket(&commandPacket);
 			break;
 
-		case 'g':
-		case 'G':
-			commandPacket.command = COMMAND_GET_STATS;
-			sendPacket(&commandPacket);
-			break;
-
 		case 27: //escape key
 			exitFlag=1;
 			break;
