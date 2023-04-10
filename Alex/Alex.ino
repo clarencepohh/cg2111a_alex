@@ -660,7 +660,7 @@ void handleCommand(TPacket *command)
       speed = command->params[0];
       val = pwmVal(speed);
       analog_write(LF, val);
-      analog_write(RF, val*0.95);
+      analog_write(RF, val*0.92);
      break;
 
     case COMMAND_RUSH:
@@ -672,7 +672,7 @@ void handleCommand(TPacket *command)
         while (dist > 25){
             dist = measure_distance();
             analog_write(LF, val);
-            analog_write(RF, val*0.95);
+            analog_write(RF, val*0.92);
             delay(100);
         }         
         analog_write(LF, 0);
@@ -692,7 +692,7 @@ void handleCommand(TPacket *command)
         // OCR1B = 0;
 
         analog_write(LF, val);
-        analog_write(RF, val*0.95);
+        analog_write(RF, val*0.92);
         analog_write(LR, 0);
         analog_write(RR, 0);
         delay(delay_ms);
@@ -763,11 +763,11 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_STOP:
         sendOK();
-        analog_write(LF, 150);
-        analog_write(RF, 150);
-        analog_write(LR, 150);
-        analog_write(RR, 150);
-        delay(200);
+        analog_write(LF, 120);
+        analog_write(RF, 120);
+        analog_write(LR, 120);
+        analog_write(RR, 120);
+        delay(300);
         analog_write(LF, 0);
         analog_write(RF, 0);
         analog_write(LR, 0);

@@ -226,7 +226,7 @@ void sendCommand(char command)
 		case 'a':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_LEFT;
-			commandPacket.params[0] = 80;
+			commandPacket.params[0] = 75;
 			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
@@ -234,7 +234,7 @@ void sendCommand(char command)
 		case 'd':
 			// getParams(&commandPacket, curr_angle);
 			commandPacket.command = COMMAND_TURN_RIGHT;
-			commandPacket.params[0] = 80;
+			commandPacket.params[0] = 75;
 			commandPacket.params[1] = 200;
 			sendPacket(&commandPacket);
 			break;
@@ -327,7 +327,7 @@ int main()
 	helloPacket.packetType = PACKET_TYPE_HELLO;
 	sendPacket(&helloPacket);
 
-	printf("Command (w=forward, s=reverse, a=turn left, d=turn right, z=turn left less, c=turn right less, x=move forward fast until ultrasonic detects wall, t=rush forward, space=stop, p=beeper sound, k=colour senser, esc=quit,)\n");
+	printf("Command (w=forward, s=reverse, a=turn left, d=turn right, z=turn left less, c=turn right less, q=turn left more, e=turn right more, x=move forward fast until ultrasonic detects wall, t=rush forward, space=stop, p=beeper sound, k=colour senser, esc=quit,)\n");
 
 	while(!exitFlag)
 	{
