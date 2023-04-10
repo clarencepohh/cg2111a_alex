@@ -803,16 +803,20 @@ void handleCommand(TPacket *command)
         digitalWrite(S2, HIGH);
         digitalWrite(S3, HIGH);
         green = pulseIn(sensor_out, LOW);
+        digitalWrite(S2, LOW);
+        digitalWrite(S3, HIGH);
+        blue = pulseIn(sensor_out, LOW);
 
-        if (red - green > 50) {
-          sendMessage("GREEN");
-        }
-        else if (green - red > 50) {
+        if (red < 450 && green > 500 && blue > 350) {
           sendMessage("RED");
+        }
+        else if (green < 550 && red > 450 && blue > 350) {
+          sendMessage("GREEN");
         }
         else {
           sendMessage("HUH?");
         }        
+
       break;
     case COMMAND_GET_STATS:
         sendStatus();

@@ -270,6 +270,14 @@ void sendCommand(char command)
 			sendPacket(&commandPacket);
 			break;
 		
+		case 'g':
+			// getParams(&commandPacket, curr_angle);
+			commandPacket.command = COMMAND_REVERSE;
+			commandPacket.params[0] = 90;
+			commandPacket.params[1] = 200;
+			sendPacket(&commandPacket);
+			break;
+		
 		case 't':
 			commandPacket.command = COMMAND_HUMP;
 			commandPacket.params[0] = 90;
