@@ -206,6 +206,14 @@ void sendCommand(char command)
 			sendPacket(&commandPacket);
 			break;
 
+		case 'b':
+			//getParams(&commandPacket, curr_speed);
+			commandPacket.command = COMMAND_FORWARD;
+			commandPacket.params[0] = 70;
+			commandPacket.params[1] = 200;
+			sendPacket(&commandPacket);
+			break;
+
 		// rotation commands
 		case 'q':
 			// getParams(&commandPacket, curr_angle);
