@@ -1,4 +1,5 @@
 # CG2111A Alex rescue robot
+This README documents the main functions and debugging steps taken during EPP2 (CG2111A) Project.
 
 ## 1. Arduino
 
